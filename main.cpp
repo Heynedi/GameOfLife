@@ -1,25 +1,19 @@
-#include <fstream>
 #include <iostream>
-#include <string>
-#include <vector>
-
-#include "grid.h"
-using namespace std;
+#include "grille.hpp"
 
 int main() {
-    string file_path = "../initial_state.txt";  // je stocke dans la chaîne mon_fichier le nom du fichier à ouvrir
-    string grid_size;
+    int l, c;
 
-    ifstream file(file_path.c_str(), ios::in);
-    if(file)  // si l'ouverture a réussi
-    {
-        //on récupère le contenu de la première ligne
-        getline(file, grid_size);
-        file.close();
-    }
+    std::cout << "Entrez le nombre de lignes : ";
+    std::cin >> l;
 
-    grid game_board(grid_size[0], grid_size[2]);
-    game_board.fill_grid();
+    std::cout << "Entrez le nombre de colonnes : ";
+    std::cin >> c;
+
+    Grille grille(l, c);
+
+    std::cout << "\nVoici votre grille :\n";
+    grille.afficher();
+
     return 0;
 }
-
