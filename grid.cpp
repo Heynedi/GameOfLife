@@ -1,17 +1,29 @@
 #include "grid.h"
 
-grid::grid(int longueur, int largeur) {
+#include <iostream>
+using namespace std;
 
-    this->longueur = longueur;
-    this->largeur = largeur;
-
+grid::grid(int row, int column) {
+    this->row = row;
+    this->column = column;
+    this->cells = vector<vector<cell>>(row, vector<cell>(column));
 }
 
-void grid::fill_grid() {
-    for (int i = 0; i < this->longueur; i++) {
-        for (int j = 0; j < this->largeur; j++) {
-
+void grid::grid_fill(string data) {
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < column; j++) {
+            if (data[i*column+j] == '1') {
+                cells[i][j].birth();
+            }
         }
     }
 }
 
+void grid::print_grid() {
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < column; j++) {
+            cout << cells[i][j].get_state();
+        }
+        cout << endl;
+    }
+}

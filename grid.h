@@ -1,18 +1,21 @@
 #ifndef GAMEOFLIFE_GRILLE_H
 #define GAMEOFLIFE_GRILLE_H
 #include <vector>
+#include "cell.h"
+#import <string>
+using namespace std;
 
 
 class grid {
 private:
-    int longueur;
-    int largeur;
-    std::vector<std::vector<cell>> cells;
+    int row;
+    int column;
+    vector<vector<cell>> cells;
 
 public:
-    grid(int longueur, int largeur);
-    void fill_grid();
+    grid(int row, int column);
+    void grid_fill(string data);
+    void print_grid();
 };
-
 
 #endif //GAMEOFLIFE_GRILLE_H

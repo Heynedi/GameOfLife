@@ -1,7 +1,6 @@
 #include "cell.h"
 
-cell::cell(bool is_alive) {
-    this->is_alive = is_alive;
+cell::cell() {
 }
 
 void cell::kill() {
