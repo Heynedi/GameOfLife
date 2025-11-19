@@ -4,12 +4,13 @@
 #include <string>
 #include <vector>
 
+#include "game.h"
 #include "grid.h"
 using namespace std;
 
 int main() {
     string file_path = "../initial_state.txt";  // je stocke dans la chaîne mon_fichier le nom du fichier à ouvrir
-    string grid_size;
+    /*string grid_size;
     string grid_data;
 
     ifstream file(file_path.c_str(), ios::in);
@@ -38,6 +39,12 @@ int main() {
 
     game_board.grid_fill(grid_data);
     game_board.print_grid();
+    */
+    game game_of_life(file_path);
+    game_of_life.init_grid_size(file_path);
+    game_of_life.init_grid_data(file_path);
+    game_of_life.init_game_board();
+    game_of_life.console_game_board();
 
     return 0;
 }
