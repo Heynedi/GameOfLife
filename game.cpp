@@ -46,13 +46,13 @@ void game::init_grid_data(string file_path) {
 }
 
 void game::init_game_board() {
-    this->main_game_board = grid(this->row, this->column);
-    this->temp_game_board = grid(this->row, this->column);
-    this->main_game_board.grid_fill(this->grid_data);
+    main_game_board = grid(this->row, this->column);
+    next_game_board = grid(this->row, this->column);
+    main_game_board.grid_fill(this->grid_data);
 }
 
 void game::console_game_board() {
-    this->main_game_board.print_grid();
+    main_game_board.print_grid();
 }
 
 int game::get_column() {
@@ -61,4 +61,77 @@ int game::get_column() {
 
 int game::get_row() {
     return this->row;
+}
+
+int game::alive_cell_around(int row, int column) {
+    int alive_cell_around = 0;
+
+    if (main_game_board.get_cell(row,column).get_state()) {
+        alive_cell_around = -1;
+    }
+
+    for (int i = row - 1; i <= row + 1; i++) { // pour chacune des 9 cellules autour de la cellule
+        for (int j = column -1; j <= column + 1; j++) {// si la case fait bien parti de la matrice
+            alive_cell_around += main_game_board.get_cell(i, j).get_state();
+        }
+    }
+    return alive_cell_around;
+}
+
+void game::fill_next_board() {
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < column; j++) {
+            int neighbors = alive_cell_around(i,j);
+            bool is_alive = main_game_board.get_cell(i,j).get_state();
+            int is_alive2 = main_game_board.get_cell(i,j).get_state();
+            if (is_alive) {
+                if (neighbors == 2 || neighbors == 3) {
+                    next_game_board.get_cell(i,j).birth();
+                }
+            }
+            else {
+                if (neighbors == 3) {
+                    next_game_board.get_cell(i,j).birth();
+                }
+            }
+        }
+    }
+}
+
+
+bool game::verify_same_board() {
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < column; j++) {
+            if (main_game_board.get_cell(i,j).get_state() != next_game_board.get_cell(i,j).get_state()) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool game::verify_no_evolution(int nbr_evolution) {
+    int static same_grid_counter = 0;
+    if (verify_same_board()) {
+        same_grid_counter++;
+    }
+    else {
+        same_grid_counter = 0;
+    }
+
+    if (same_grid_counter == nbr_evolution) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+void game::switch_board() {
+    main_game_board = next_game_board;
+    next_game_board = grid(row, column);
+}
+
+grid& game::get_main_board() {
+    return main_game_board;
 }

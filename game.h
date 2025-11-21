@@ -10,7 +10,7 @@
 class game {
 private:
     grid main_game_board = grid(0,0);
-    grid temp_game_board = grid(0,0);
+    grid next_game_board = grid(0,0);
     int generation = 0;
     string file_path;
     int row = 0;
@@ -25,6 +25,14 @@ public:
 
     int get_column();
     int get_row();
+    grid& get_main_board();
+
+    int alive_cell_around(int row, int column);
+    void fill_next_board();
+    bool verify_same_board();
+    bool verify_no_evolution(int nbr_iteration);
+
+    void switch_board();
 
 };
 

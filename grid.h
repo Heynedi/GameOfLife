@@ -16,6 +16,7 @@ public:
     grid(int row, int column);
     void grid_fill(string data);
     void print_grid();
+    cell& get_cell(int x, int y);
 };
 
 #endif //GAMEOFLIFE_GRILLE_H
