@@ -29,9 +29,5 @@ void grid::print_grid() {
 }
 
 cell& grid::get_cell(int row, int column) {
-    static cell dead_cell;
-    if (row < 0 || row >= this->row || column < 0 || column >= this->column) {
-        return dead_cell;
-    }
     return cells[row][column];
 }

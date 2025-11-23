@@ -62,7 +62,7 @@ int game::get_column() {
 int game::get_row() {
     return this->row;
 }
-
+//renvoie le nombre de cellule vivante autour d'une cellule
 int game::alive_cell_around(int row, int column) {
     int alive_cell_around = 0;
 
@@ -72,7 +72,10 @@ int game::alive_cell_around(int row, int column) {
 
     for (int i = row - 1; i <= row + 1; i++) { // pour chacune des 9 cellules autour de la cellule
         for (int j = column -1; j <= column + 1; j++) {// si la case fait bien parti de la matrice
-            alive_cell_around += main_game_board.get_cell(i, j).get_state();
+            int wrapped_row = (i % this->row + this->row) % this->row; // faire simplement i%this->row ne fonctionne pas car parfois i = -1 et -1 % n = -1. On utilise donc une formule "plus complète" qui permet bien de récuperer le reste de la division
+            int wrapped_column = (j % this->column + this->column) % this->column;
+
+            alive_cell_around += main_game_board.get_cell(wrapped_row, wrapped_column).get_state();
         }
     }
     return alive_cell_around;
