@@ -20,7 +20,7 @@ private:
 public:
     grid(int row, int column);
     void grid_fill(string data);
-    void print_grid();
+    string print_grid();
     cell& get_cell(int x, int y);
     vector<vector<cell>> get_cells();
     void show_grid(sf::RenderWindow &window);

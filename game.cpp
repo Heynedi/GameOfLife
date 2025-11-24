@@ -7,6 +7,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include "rules.h"
 
 game::game(string file_path) {
     this->file_path = file_path;
@@ -51,9 +52,37 @@ void game::init_game_board() {
     main_game_board.grid_fill(this->grid_data);
 }
 
-void game::console_game_board() {
-    main_game_board.print_grid();
+void game::console_game_board(string file_path) {
+    string string_grid = main_game_board.print_grid();
+    string_grid += "\n";
+    string string_size = to_string(row) + " " + to_string(column);
+
+    string string_data = string_size + "\n" + string_grid;
+
+    // --- ÉTAPE 1 : Création du nouveau nom de fichier ---
+    std::string new_file_path = file_path;
+
+    // On cherche la position du dernier point '.' (pour l'extension)
+    size_t point_position = new_file_path.find_last_of('.');
+
+    if (point_position != std::string::npos) {
+        // Si on a trouvé un point (ex: "fichier.txt"), on insère "_out" juste avant
+        // Résultat : "fichier_out.txt"
+        new_file_path.insert(point_position, "_out");
+    } else {
+        // Si pas d'extension (ex: "fichier"), on ajoute à la fin
+        // Résultat : "fichier_out"
+        new_file_path += "_out";
+    }
+
+    // --- ÉTAPE 2 : Ouverture et Écriture ---
+    // std::ios::app (Append) fait exactement ce que vous voulez :
+    // - Si le fichier n'existe pas -> Il le crée.
+    // - Si le fichier existe -> Il garde le contenu et se place à la fin.
+    std::ofstream fichier(new_file_path, std::ios::app);
+    fichier << string_data << std::endl; // On ajoute le texte + saut de ligne
 }
+
 
 int game::get_column() {
     return this->column;
@@ -81,21 +110,16 @@ int game::alive_cell_around(int row, int column) {
     return alive_cell_around;
 }
 
-void game::fill_next_board() {
+void game::fill_next_board(rules rules) {
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < column; j++) {
             int neighbors = alive_cell_around(i,j);
-            bool is_alive = main_game_board.get_cell(i,j).get_state();
-            int is_alive2 = main_game_board.get_cell(i,j).get_state();
-            if (is_alive) {
-                if (neighbors == 2 || neighbors == 3) {
-                    next_game_board.get_cell(i,j).birth();
-                }
+            bool state = main_game_board.get_cell(i,j).get_state();
+            if (rules.apply_rules(neighbors, state)) {
+                next_game_board.get_cell(i,j).birth();
             }
             else {
-                if (neighbors == 3) {
-                    next_game_board.get_cell(i,j).birth();
-                }
+                next_game_board.get_cell(i,j).kill();
             }
         }
     }

@@ -5,6 +5,7 @@
 #ifndef GAMEOFLIFE_GAME_H
 #define GAMEOFLIFE_GAME_H
 #include "grid.h"
+#include "rules.h"
 
 
 class game {
@@ -21,14 +22,14 @@ public:
     void init_game_board();
     void init_grid_size(string file_path);
     void init_grid_data(string file_path);
-    void console_game_board();
+    void console_game_board(string file_path);
 
     int get_column();
     int get_row();
     grid& get_main_board();
 
     int alive_cell_around(int row, int column);
-    void fill_next_board();
+    void fill_next_board(rules rules);
     bool verify_same_board();
     bool verify_no_evolution(int nbr_iteration);
 

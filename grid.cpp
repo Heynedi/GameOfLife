@@ -28,14 +28,20 @@ void grid::grid_fill(string data) {
     }
 }
 
-void grid::print_grid() {
+string grid::print_grid() {
+    string string_grid;
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < column; j++) {
             cout << cells[i][j].get_state();
+            string_grid += (cells[i][j].get_state() + '0');
+            string_grid += " ";
         }
         cout << endl;
+        string_grid += "\r\n";
     }
     cout<<endl;
+    string_grid += "\r\n";
+    return string_grid;
 }
 
 cell& grid::get_cell(int row, int column) {
