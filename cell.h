@@ -4,11 +4,11 @@
 
 class cell {
 private:
-    bool is_alive;
+    bool is_alive = 0;
     int x;
     int y;
 public:
-    cell(bool is_alive);
+    cell();
 
     void kill();
     void birth();

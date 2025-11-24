@@ -1,15 +1,14 @@
 #include "cell.h"
 
-cell::cell(bool is_alive) {
-    this->is_alive = is_alive;
+cell::cell() {
 }
 
 void cell::kill() {
-    this->is_alive = false;
+    is_alive = false;
 }
 
 void cell::birth() {
-    this->is_alive = true;
+    is_alive = true;
 }
 
 bool cell::get_state() {
@@ -22,9 +21,9 @@ void cell::set_position(int x, int y) {
 }
 
 int cell::get_position_x() {
-    return this->x;
+    return x;
 }
 
 int cell::get_position_y() {
-    return this->y;
+    return y;
 }
