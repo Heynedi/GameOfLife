@@ -9,19 +9,11 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 
+#include "graphic.h"
+
 using namespace std;
 
 int main() {
-//SFML
-    // Create the main window
-    //sf::RenderWindow window(sf::VideoMode({800, 600}), "SFML window");
-
-    //music
-    // Load a music to play
-    //sf::Music music("nice_music.ogg");
-    // Play the music
-    //music.play();
-
     string file_path = "../initial_state.txt";  // je stocke dans la chaîne mon_fichier le nom du fichier à ouvrir
 
     //iteration 0
@@ -31,13 +23,49 @@ int main() {
     game_of_life.init_game_board();
     game_of_life.console_game_board();
 
-    //autres iterations
-    for (int i = 0; i < 20; i++) {
-        game_of_life.fill_next_board();
-        game_of_life.switch_board();
-        cout<<endl;
-        game_of_life.console_game_board();
+    graphic graphic(10);
+    graphic.set_window_size(game_of_life.get_column() * graphic.get_cell_size(),game_of_life.get_row() * graphic.get_cell_size());
+    cout<<graphic.get_window_witdh()<<endl;
+    cout<<graphic.get_window_height()<<endl;
+
+
+    sf::RenderWindow window(sf::VideoMode({// sf::VideoMode définit la taille de la fenêtre (largeur, hauteur)
+        static_cast<unsigned int>(graphic.get_window_witdh()), // Ici, on calcule dynamiquement la taille pour s'adapter à la grille Largeur = nombre de colonnes * taille d'une cellule ,Hauteur = nombre de lignes * taille d'une cellule
+        static_cast<unsigned int>(graphic.get_window_height()) // on change en unsigned int car la fonction attend ceci
+    }), "Jeu de la Vie - Grille");// nom qui est affiché dans le haut de la grille
+
+    sf::Clock clock; //démarre le chrono
+
+    while (window.isOpen()) { // boucle pour savoir quand la fenetre est encore ouverte
+        while (const std::optional event = window.pollEvent()) { // permet de gérer les évènements (clicks ou autre...) et le stocke dans event
+            if (event->is<sf::Event::Closed>())// si l'event est de fermer la fenetre alors on ferme la fenetre
+                window.close();
+        }
+
+        //que toute les x secondes
+
+        sf::Time elapsed1 = clock.getElapsedTime(); //mesure le temps chrono
+        if (elapsed1 > sf::seconds(0.1f) && !graphic.get_stop()) {
+            game_of_life.fill_next_board();
+            game_of_life.switch_board();
+            clock.restart();
+        }
+
+        //le plus vite possible
+        graphic.show_grid(window,game_of_life.get_row(), game_of_life.get_column(), game_of_life.get_main_board().get_cells());
+        graphic.click_cell(window,game_of_life.get_main_board());
+        if (const auto* keyEvent = window.pollEvent()->getIf<sf::Event::KeyPressed>()) {
+            if (keyEvent->code == sf::Keyboard::Key::Space) {
+                graphic.click_stop(); // On appelle la fonction qui inverse juste le booléen
+            }
+        }
+        //sf::sleep(sf::seconds(0.1f));
+
+
+
+        //game_of_life.console_game_board();
     }
+
 
     return 0;
 }

@@ -1,6 +1,15 @@
 #include "grid.h"
-
 #include <iostream>
+
+#include "SFML/Graphics/RenderWindow.hpp"
+
+#include "SFML/Graphics/Color.hpp"
+#include "SFML/Graphics/RectangleShape.hpp"
+
+namespace sf {
+    class RenderWindow;
+}
+
 using namespace std;
 
 grid::grid(int row, int column) {
@@ -26,8 +35,13 @@ void grid::print_grid() {
         }
         cout << endl;
     }
+    cout<<endl;
 }
 
 cell& grid::get_cell(int row, int column) {
     return cells[row][column];
+}
+
+vector<vector<cell>> grid::get_cells() {
+    return cells;
 }

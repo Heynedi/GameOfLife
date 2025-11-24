@@ -3,6 +3,11 @@
 #include <vector>
 #include "cell.h"
 #import <string>
+
+namespace sf {
+    class RenderWindow;
+}
+
 using namespace std;
 
 
@@ -17,6 +22,8 @@ public:
     void grid_fill(string data);
     void print_grid();
     cell& get_cell(int x, int y);
+    vector<vector<cell>> get_cells();
+    void show_grid(sf::RenderWindow &window);
 };
 
 #endif //GAMEOFLIFE_GRILLE_H
