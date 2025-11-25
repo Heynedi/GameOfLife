@@ -30,7 +30,8 @@ public:
     int get_window_height();
     bool get_stop();
     void show_grid(sf::RenderWindow &window, int row, int column, vector<vector<cell> > cells);
-    void click_cell(sf::RenderWindow &window, grid &main_board);
+    void click_cell_birth(sf::RenderWindow &window, grid &main_board);
+    void click_cell_kill(sf::RenderWindow &window, grid &main_board);
     void click_stop();
 };
 

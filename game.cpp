@@ -83,7 +83,6 @@ void game::console_game_board(string file_path) {
     fichier << string_data << std::endl; // On ajoute le texte + saut de ligne
 }
 
-
 int game::get_column() {
     return this->column;
 }
@@ -91,7 +90,7 @@ int game::get_column() {
 int game::get_row() {
     return this->row;
 }
-//renvoie le nombre de cellule vivante autour d'une cellule
+
 int game::alive_cell_around(int row, int column) {
     int alive_cell_around = 0;
 
@@ -124,7 +123,6 @@ void game::fill_next_board(rules rules) {
         }
     }
 }
-
 
 bool game::verify_same_board() {
     for (int i = 0; i < row; i++) {

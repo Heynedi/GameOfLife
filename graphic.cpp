@@ -110,7 +110,7 @@ void graphic::show_grid(sf::RenderWindow &window, int row, int column, vector<ve
     window.display();
 }
 
-void graphic::click_cell(sf::RenderWindow &window, grid &main_board) {
+void graphic::click_cell_birth(sf::RenderWindow &window, grid &main_board) {
     sf::Vector2i positionSouris = sf::Mouse::getPosition(window);
     int x_mouse = positionSouris.x;
     int y_mouse = positionSouris.y;
@@ -118,6 +118,18 @@ void graphic::click_cell(sf::RenderWindow &window, grid &main_board) {
     if (x_mouse > 0 && y_mouse > 0 && x_mouse < window_witdh && y_mouse < window_height) { //si la souris est dans la fenetre
         if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) { // si la souris est cliqué
             main_board.get_cell(y_mouse / cell_size, x_mouse / cell_size).birth();
+        }
+    }
+}
+
+void graphic::click_cell_kill(sf::RenderWindow &window, grid &main_board) {
+    sf::Vector2i positionSouris = sf::Mouse::getPosition(window);
+    int x_mouse = positionSouris.x;
+    int y_mouse = positionSouris.y;
+
+    if (x_mouse > 0 && y_mouse > 0 && x_mouse < window_witdh && y_mouse < window_height) { //si la souris est dans la fenetre
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right)) { // si la souris est cliqué
+            main_board.get_cell(y_mouse / cell_size, x_mouse / cell_size).kill();
         }
     }
 }
