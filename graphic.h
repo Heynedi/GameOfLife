@@ -21,7 +21,7 @@ private:
     int cell_size = 20;
     int window_witdh;
     int window_height;
-    bool stop = false;
+    bool stop = true;
 public:
     graphic(int cell_size);
     void set_window_size(int window_witdh, int window_height);
