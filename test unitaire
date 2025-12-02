@@ -1,0 +1,40 @@
+#include <iostream>
+#include <vector>
+#include "game.hpp"
+
+// Fonction pour comparer deux matrices
+bool matricesAreEqual(const std::vector<std::vector<int>>& A,
+                      const std::vector<std::vector<int>>& B)
+{
+    if (A.size() != B.size()) return false;
+    for (size_t i = 0; i < A.size(); ++i) {
+        if (A[i].size() != B[i].size()) return false;
+        for (size_t j = 0; j < A[i].size(); ++j) {
+            if (A[i][j] != B[i][j]) return false;
+        }
+    }
+    return true;
+}
+
+int main(game.get_main_game_board) {
+
+    // Matrice final (Blinker vertical)
+    std::vector<std::vector<int>> final = {
+        {0,0,0,0,0},
+        {0,0,1,0,0},
+        {0,0,1,0,0},
+        {0,0,1,0,0},
+        {0,0,0,0,0}
+    };
+
+
+
+    // Vérification
+    if (matricesAreEqual(game.get_main_game_board, final)) {
+        std::cout << "TEST OK : L’oscillateur Blinker revient à son état initial." << std::endl;
+        return 0;
+    } else {
+        std::cout << "TEST ECHEC : La matrice finale n'est pas identique à l'initiale." << std::endl;
+        return 1;
+    }
+}
