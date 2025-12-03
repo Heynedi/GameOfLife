@@ -1,29 +1,27 @@
 #include "cell.h"
 
+#include <ranges>
+
 cell::cell() {
-}
-
-void cell::kill() {
-    is_alive = false;
-}
-
-void cell::birth() {
-    is_alive = true;
+    state = false;
 }
 
 bool cell::get_state() {
-    return is_alive;
+    return state;
 }
 
-void cell::set_position(int x, int y) {
-    this->x = x;
-    this->y = y;
+void cell::kill() {
+    state = false;
 }
 
-int cell::get_position_x() {
-    return x;
+void cell::birth() {
+    state = true;
 }
 
-int cell::get_position_y() {
-    return y;
+void cell::force_kill() {
+    state = false;
+}
+
+void cell::force_birth() {
+    state = true;
 }

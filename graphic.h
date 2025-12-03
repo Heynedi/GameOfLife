@@ -1,39 +1,31 @@
 //
-// Created by Utilisateur on 24/11/2025.
+// Created by Utilisateur on 02/12/2025.
 //
 
-#ifndef GAMEOFLIFE_GRAPHIC_H
-#define GAMEOFLIFE_GRAPHIC_H
+#ifndef GAMEOFLIFE_V2_GRAPHIC_H
+#define GAMEOFLIFE_V2_GRAPHIC_H
 
-#include <vector>
-
-#include "cell.h"
-#include "grid.h"
+#include "game.h"
 
 namespace sf {
     class RenderWindow;
 }
 
-using namespace std;
-
 class graphic {
-private:
-    int cell_size = 20;
-    int window_witdh;
+protected:
+    float cell_size;
+    int window_width;
     int window_height;
-    bool stop = true;
 public:
-    graphic(int cell_size);
-    void set_window_size(int window_witdh, int window_height);
-    int get_cell_size();
-    int get_window_witdh();
+    graphic();
+    ~graphic() = default;
+    float get_cell_size();
+    void set_cell_size(float cell_size);
+    void set_window_size(game* game_of_life);
+    int get_window_width();
     int get_window_height();
-    bool get_stop();
-    void show_grid(sf::RenderWindow &window, int row, int column, vector<vector<cell> > cells);
-    void click_cell_birth(sf::RenderWindow &window, grid &main_board);
-    void click_cell_kill(sf::RenderWindow &window, grid &main_board);
-    void click_stop();
+    void show_grid(sf::RenderWindow* window, int row, int column, vector<vector<cell*>> cells);
 };
 
 
-#endif //GAMEOFLIFE_GRAPHIC_H
+#endif //GAMEOFLIFE_V2_GRAPHIC_H

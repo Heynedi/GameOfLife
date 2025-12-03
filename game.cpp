@@ -1,5 +1,5 @@
 //
-// Created by Utilisateur on 19/11/2025.
+// Created by Utilisateur on 02/12/2025.
 //
 
 #include "game.h"
@@ -7,25 +7,25 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include "rules.h"
+#include <string>
 
 game::game(string file_path) {
     this->file_path = file_path;
 }
 
-void game::init_grid_size(string file_path) {
+
+void game::init_grid_size() {
     ifstream file(file_path.c_str(), ios::in);
     string grid_size;
     getline(file, grid_size);
     stringstream ss(grid_size);
-    cout<<grid_size<<endl;
     int row, column;
     ss >> row >> column;
     this->column = column;
     this->row = row;
 }
 
-void game::init_grid_data(string file_path) {
+void game::init_grid_data() {
     ifstream file(file_path.c_str(), ios::in);
     string line;
 
@@ -47,13 +47,64 @@ void game::init_grid_data(string file_path) {
 }
 
 void game::init_game_board() {
-    main_game_board = grid(this->row, this->column);
-    next_game_board = grid(this->row, this->column);
-    main_game_board.grid_fill(this->grid_data);
+    main_game_board = new grid(row, column);
+    next_game_board = new grid(row, column);
+    main_game_board->grid_fill(grid_data);
+}
+
+int game::get_row() {
+    return row;
+}
+
+int game::get_column() {
+    return column;
+}
+
+int game::alive_cell_around(int row, int column) {
+    int alive_cell_around = 0;
+
+    if (main_game_board->get_cell(row,column)->get_state()) {
+        alive_cell_around = -1;
+    }
+
+    for (int i = row - 1; i <= row + 1; i++) { // pour chacune des 9 cellules autour de la cellule
+        for (int j = column -1; j <= column + 1; j++) {// si la case fait bien parti de la matrice
+            int wrapped_row = (i % this->row + this->row) % this->row; // faire simplement i%this->row ne fonctionne pas car parfois i = -1 et -1 % n = -1. On utilise donc une formule "plus complète" qui permet bien de récuperer le reste de la division
+            int wrapped_column = (j % this->column + this->column) % this->column;
+
+            alive_cell_around += main_game_board->get_cell(wrapped_row, wrapped_column)->get_state();
+        }
+    }
+    return alive_cell_around;
+}
+
+void game::fill_next_board(rules* rules) {
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < column; j++) {
+            int neighbors = alive_cell_around(i,j);
+            bool state = main_game_board->get_cell(i,j)->get_state();
+            if (rules->apply_rules(neighbors, state)) {
+                next_game_board->get_cell(i,j)->birth();
+            }
+            else {
+                next_game_board->get_cell(i,j)->kill();
+            }
+        }
+    }
+}
+
+void game::swap_board() {
+    delete main_game_board;
+    main_game_board = next_game_board;
+    next_game_board = new grid(row, column);
+}
+
+grid* game::get_main_board() {
+    return main_game_board;
 }
 
 void game::console_game_board(string file_path) {
-    string string_grid = main_game_board.print_grid();
+    string string_grid = main_game_board->print_grid();
     string_grid += "\n";
     string string_size = to_string(row) + " " + to_string(column);
 
@@ -83,80 +134,3 @@ void game::console_game_board(string file_path) {
     fichier << string_data << std::endl; // On ajoute le texte + saut de ligne
 }
 
-int game::get_column() {
-    return this->column;
-}
-
-int game::get_row() {
-    return this->row;
-}
-
-int game::alive_cell_around(int row, int column) {
-    int alive_cell_around = 0;
-
-    if (main_game_board.get_cell(row,column).get_state()) {
-        alive_cell_around = -1;
-    }
-
-    for (int i = row - 1; i <= row + 1; i++) { // pour chacune des 9 cellules autour de la cellule
-        for (int j = column -1; j <= column + 1; j++) {// si la case fait bien parti de la matrice
-            int wrapped_row = (i % this->row + this->row) % this->row; // faire simplement i%this->row ne fonctionne pas car parfois i = -1 et -1 % n = -1. On utilise donc une formule "plus complète" qui permet bien de récuperer le reste de la division
-            int wrapped_column = (j % this->column + this->column) % this->column;
-
-            alive_cell_around += main_game_board.get_cell(wrapped_row, wrapped_column).get_state();
-        }
-    }
-    return alive_cell_around;
-}
-
-void game::fill_next_board(rules rules) {
-    for (int i = 0; i < row; i++) {
-        for (int j = 0; j < column; j++) {
-            int neighbors = alive_cell_around(i,j);
-            bool state = main_game_board.get_cell(i,j).get_state();
-            if (rules.apply_rules(neighbors, state)) {
-                next_game_board.get_cell(i,j).birth();
-            }
-            else {
-                next_game_board.get_cell(i,j).kill();
-            }
-        }
-    }
-}
-
-bool game::verify_same_board() {
-    for (int i = 0; i < row; i++) {
-        for (int j = 0; j < column; j++) {
-            if (main_game_board.get_cell(i,j).get_state() != next_game_board.get_cell(i,j).get_state()) {
-                return false;
-            }
-        }
-    }
-    return true;
-}
-
-bool game::verify_no_evolution(int nbr_evolution) {
-    int static same_grid_counter = 0;
-    if (verify_same_board()) {
-        same_grid_counter++;
-    }
-    else {
-        same_grid_counter = 0;
-    }
-
-    if (same_grid_counter == nbr_evolution) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-
-void game::switch_board() {
-    main_game_board = next_game_board;
-    next_game_board = grid(row, column);
-}
-
-grid& game::get_main_board() {
-    return main_game_board;
-}

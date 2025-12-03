@@ -1,23 +1,18 @@
-#ifndef GAMEOFLIFE_CELL_H
-#define GAMEOFLIFE_CELL_H
-
+#ifndef GAMEOFLIFE_V2_CELL_H
+#define GAMEOFLIFE_V2_CELL_H
 
 class cell {
-private:
-    bool is_alive = 0;
-    int x;
-    int y;
+protected:
+    bool state;
 public:
     cell();
-
-    void kill();
-    void birth();
+    ~cell() = default;
     bool get_state();
-
-    void set_position(int x, int y);
-    int get_position_x();
-    int get_position_y();
+    virtual void kill();
+    virtual void birth();
+    virtual void force_kill();
+    virtual void force_birth();
 };
 
 
-#endif //GAMEOFLIFE_CELL_H
+#endif //GAMEOFLIFE_V2_CELL_H
