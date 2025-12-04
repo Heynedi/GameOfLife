@@ -1,7 +1,3 @@
-//
-// Created by Utilisateur on 03/12/2025.
-//
-
 #ifndef GAMEOFLIFE_V2_RULES_H
 #define GAMEOFLIFE_V2_RULES_H
 

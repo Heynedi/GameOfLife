@@ -1,7 +1,3 @@
-//
-// Created by Utilisateur on 02/12/2025.
-//
-
 #include "game.h"
 
 #include <fstream>
@@ -93,10 +89,9 @@ void game::fill_next_board(rules* rules) {
     }
 }
 
-void game::swap_board() {
-    delete main_game_board;
-    main_game_board = next_game_board;
-    next_game_board = new grid(row, column);
+void game::switch_board() {
+    std::swap(main_game_board, next_game_board);
+    next_game_board->reset();
 }
 
 grid* game::get_main_board() {

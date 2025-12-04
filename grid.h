@@ -20,6 +20,7 @@ public:
     vector<vector<cell*>>* get_cells();
     void grid_fill(string data);
     string print_grid();
+    void reset();
 };
 
 

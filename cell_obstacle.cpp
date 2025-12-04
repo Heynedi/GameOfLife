@@ -1,8 +1,12 @@
 #include "cell_obstacle.h"
 
+#include <iostream>
+
 cell_obstacle::cell_obstacle() {}
 
-void cell_obstacle::kill() {} //on empeche une cellule obstacle de pouvoir mourrir comme une cellule normale
+void cell_obstacle::kill() {
+    std::cout << "1" << std::endl;
+} //on empeche une cellule obstacle de pouvoir mourrir comme une cellule normale
 void cell_obstacle::birth() {} //on empeche une cellule obstacle de pouvoir naitre comme une cellule normale
 
 void cell_obstacle::force_kill() { //on permet à une cellule obstacle de pouvoir mourrir avec une méthode spécifique

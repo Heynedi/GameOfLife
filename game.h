@@ -1,7 +1,3 @@
-//
-// Created by Utilisateur on 02/12/2025.
-//
-
 #ifndef GAMEOFLIFE_V2_GAME_H
 #define GAMEOFLIFE_V2_GAME_H
 #include <string>
@@ -31,7 +27,7 @@ public:
 
     int alive_cell_around(int row, int column);
     void fill_next_board(rules*);
-    void swap_board();
+    void switch_board();
 
     void console_game_board(string file_path);
 

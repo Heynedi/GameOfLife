@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 
+#include "cell_obstacle.h"
 #include "cell_standard.h"
 
 grid::grid(int row, int column) {
@@ -49,4 +50,12 @@ string grid::print_grid() {
     cout<<endl;
     string_grid += "\r\n";
     return string_grid;
+}
+
+void grid::reset() {
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < column; j++) {
+            cells[i][j]->kill();
+        }
+    }
 }
