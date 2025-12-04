@@ -11,6 +11,50 @@
 #include "SFML/System/Clock.hpp"
 #include "cell_obstacle.h"
 
+
+
+#include <fstream>
+
+bool matricesAreEqual(const std::vector<std::vector<int>>& A,
+                      const std::vector<std::vector<int>>& B)
+{
+    if (A.size() != B.size()) return false;
+    for (size_t i = 0; i < A.size(); i++) {
+        for (size_t j = 0; j < A[i].size(); j++) {
+            if (A[i][j] != B[i][j]) return false;
+        }
+    }
+    return true;
+}
+
+std::vector<std::vector<int>> final(const std::string& path)
+{
+    std::ifstream f(path);
+    int r, c;
+    f >> r >> c;
+
+    std::vector<std::vector<int>> M(r, std::vector<int>(c));
+
+    for (int i = 0; i < r; i++)
+        for (int j = 0; j < c; j++)
+            f >> M[i][j];
+
+    return M;
+}
+
+bool test(const std::vector<std::vector<int>>& board)
+{
+    auto finale = final("../final_state_3.txt");
+
+    if (matricesAreEqual(board, finale)) {
+        std::cout << "TEST OK\n";
+        return true;
+    }
+    std::cout << "TEST ECHEC\n";
+    return false;
+}
+
+
 int main() {
 
     string file_path = "../initial_state.txt";
@@ -73,43 +117,6 @@ int main() {
     }
 
     window.close();
-    window.close();
-}
-
-// ---------------------------------------------------------
-// À partir d’ici : uniquement corrections nécessaires
-// ---------------------------------------------------------
-
-bool matricesAreEqual(const std::vector<std::vector<int>>& A,
-                      const std::vector<std::vector<int>>& B)
-{
-    if (A.size() != B.size()) return false;
-    for (size_t i = 0; i < A.size(); ++i) {
-        if (A[i].size() != B[i].size()) return false;
-        for (size_t j = 0; j < A[i].size(); ++j) {
-            if (A[i][j] != B[i][j]) return false;
-        }
-    }
-    return true;
-}
-
-// Fonction test correcte
-bool test(const std::vector<std::vector<int>>& board)
-{
-    std::vector<std::vector<int>> final = {
-        {0,0,0,0,0},
-        {0,0,1,0,0},
-        {0,0,1,0,0},
-        {0,0,1,0,0},
-        {0,0,0,0,0}
-    };
-
-    if (matricesAreEqual(board, final)) {
-        std::cout << "TEST OK " << std::endl;
-        return true;
-    } else {
-        std::cout << "TEST ECHEC " << std::endl;
-        return false;
-    }
+    test(game->get_main_board())
     return 0;
 }
