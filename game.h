@@ -1,3 +1,7 @@
+//
+// Created by Utilisateur on 02/12/2025.
+//
+
 #ifndef GAMEOFLIFE_V2_GAME_H
 #define GAMEOFLIFE_V2_GAME_H
 #include <string>
@@ -14,6 +18,7 @@ protected:
     string grid_data;
     int row;
     int column;
+    int iteration;
 public:
     game(string file_path);
     ~game() = default;
@@ -24,13 +29,14 @@ public:
     int get_row();
     int get_column();
     grid* get_main_board();
+    int get_iteration();
 
+    void increment_iteration();
     int alive_cell_around(int row, int column);
     void fill_next_board(rules*);
-    void switch_board();
+    void swap_board();
 
     void console_game_board(string file_path);
-
 };
 
 

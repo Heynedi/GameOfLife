@@ -3,7 +3,6 @@
 #include <iostream>
 #include <string>
 
-#include "cell_obstacle.h"
 #include "cell_standard.h"
 
 grid::grid(int row, int column) {
@@ -55,7 +54,15 @@ string grid::print_grid() {
 void grid::reset() {
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < column; j++) {
+            if (i == 2 && j == 2) {
+                cout << cells[i][j]->get_is_obstacle();
+                cout << cells[i][j]->get_state() << endl;
+            }
             cells[i][j]->kill();
+            if (i == 2 && j == 2) {
+                cout << cells[i][j]->get_is_obstacle();
+                cout << cells[i][j]->get_state() << endl;
+            }
         }
     }
 }

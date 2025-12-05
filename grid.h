@@ -14,8 +14,10 @@ protected:
     int column;
     vector<vector<cell*>> cells;
 public:
+
     grid(int row, int column);
     ~grid() = default;
+    void copy_grid_shape(grid* grid_to_copy);
     cell* get_cell(int x, int y);
     vector<vector<cell*>>* get_cells();
     void grid_fill(string data);

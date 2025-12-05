@@ -4,10 +4,12 @@
 class cell {
 protected:
     bool state;
+    bool is_obstacle;
 public:
     cell();
     ~cell() = default;
     bool get_state();
+    bool get_is_obstacle();
     virtual void kill();
     virtual void birth();
     virtual void force_kill();

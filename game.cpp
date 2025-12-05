@@ -1,9 +1,15 @@
+//
+// Created by Utilisateur on 02/12/2025.
+//
+
 #include "game.h"
 
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
+
+#include "cell_obstacle.h"
 
 game::game(string file_path) {
     this->file_path = file_path;
@@ -79,6 +85,14 @@ void game::fill_next_board(rules* rules) {
         for (int j = 0; j < column; j++) {
             int neighbors = alive_cell_around(i,j);
             bool state = main_game_board->get_cell(i,j)->get_state();
+            if (main_game_board->get_cell(i,j)->get_is_obstacle()) {
+                auto* next_cells = next_game_board->get_cells();
+                delete (*next_cells)[i][j];
+                (*next_cells)[i][j] = new cell_obstacle();
+                if (main_game_board->get_cell(i,j)->get_state()) {
+                    next_game_board->get_cell(i,j)->force_birth();
+                }
+            }
             if (rules->apply_rules(neighbors, state)) {
                 next_game_board->get_cell(i,j)->birth();
             }
@@ -89,7 +103,7 @@ void game::fill_next_board(rules* rules) {
     }
 }
 
-void game::switch_board() {
+void game::swap_board() {
     std::swap(main_game_board, next_game_board);
     next_game_board->reset();
 }
@@ -129,3 +143,12 @@ void game::console_game_board(string file_path) {
     fichier << string_data << std::endl; // On ajoute le texte + saut de ligne
 }
 
+int game::get_iteration() {
+    return iteration;
+}
+
+void game::increment_iteration() {
+    iteration++;
+}void init_grid_size();
+void init_grid_data();
+void init_game_board();

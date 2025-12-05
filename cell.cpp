@@ -10,6 +10,10 @@ bool cell::get_state() {
     return state;
 }
 
+bool cell::get_is_obstacle() {
+    return is_obstacle;
+}
+
 void cell::kill() {
     state = false;
 }
