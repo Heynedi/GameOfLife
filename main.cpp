@@ -17,16 +17,29 @@ int main() {
     //variables nécessaires au fonctionnement du jeu de la vie
     string file_path = "../initial_state.txt";
     float speed = 0.1;
+    cout << "entrez la vitesse de chaque itération (en seconde):";
+    cin >> speed;
     bool show_console = false;
+    cout << "Souhaitez vous activer l'enregistrement dans un fichier _out ? (0/1):";
+    cin >> show_console;
     bool stop = true;
 
     //variables nécessaires pour basculer entre le mode infini et le mode fini.
+
     int nbr_iteration = 20;
     bool activate_game_done = false;
     bool game_done = false;
+    cout << "Souhaitez vous mettre le jeu en mode fini ? (0/1)";
+    cin >> activate_game_done;
+    if (activate_game_done) {
+        cout << "Combiens d'itération voulez vous réaliser ?";
+        cin >> nbr_iteration;
+    }
 
-    //
-    bool test = true;
+    //passe le jeu en mode "fini" et met le bon nombre d'itération pour pouvoir réaliser le test unitaire
+    bool test = false;
+    cout << "Souhaitez vous faire un test unitaire ? (0/1)";
+    cin >> test;
     if (test) {
         file_path = "../test_start_state.txt";
         nbr_iteration = 20;
@@ -66,20 +79,20 @@ int main() {
     gui->set_window_size(game_of_life);     // définit la valeur des attributs window_width et window_height
 
     sf::RenderWindow window(sf::VideoMode({                 // définition de la taille de la fenêtre
-        static_cast<unsigned int>(gui->get_window_width()),        // largeur = nombre de colonnes * taille d'une cellule
-        static_cast<unsigned int>(gui->get_window_height())        // lauteur = nombre de lignes * taille d'une cellule
+        static_cast<unsigned int>(gui->get_window_width()),           // largeur = nombre de colonnes * taille d'une cellule
+        static_cast<unsigned int>(gui->get_window_height())           // lauteur = nombre de lignes * taille d'une cellule
     }), "Game of Life");                                        // nom de la fenêtre
 
-    while (window.isOpen() && !game_done) {                                         // tant que la fenetre est ouverte
+    while (window.isOpen() && !game_done) {                           // tant que la fenetre est ouverte et qu'il reste des itération à faire
         while (const std::optional event = window.pollEvent()) {      // permet de gérer les évènements et le stocke dans event
             if (event->is<sf::Event::Closed>())                       // si l'event est de fermer la fenetre
                 window.close();                                       // on ferme la fenetre
         }
         // le bloc de code suivant doit être exécuté toutes les "speed" secondes pour ne pas que le jeu de la vie aille trop vite.
         sf::Time elapsed = clock.getElapsedTime();                    // on récupère le temps de l'horloge
-        if (elapsed > sf::seconds(speed) && !stop) {       // si le temps mesuré est superieur à "vitesse"
-            game_of_life->fill_next_board(rule);
-            game_of_life->swap_board();
+        if (elapsed > sf::seconds(speed) && !stop) {                  // si le temps mesuré est superieur à "vitesse"
+            game_of_life->fill_next_board(rule);                      // calcule l'itération suivante
+            game_of_life->swap_board();                               // on échange les tableaux pour passer à l'itération suivante
             clock.restart();                                          // on remet l'horloge à 0
             game_of_life->increment_iteration();
             if (activate_game_done && game_of_life->get_iteration()>nbr_iteration) {
@@ -104,6 +117,8 @@ int main() {
         control->click_cell_kill(&window, gui, game_of_life->get_main_board());      // on tue les cellules sur lesquels on fait clique droit avec la souris
         control->click_key(&window, gui, game_of_life->get_main_board(), &stop);;
     }
+
+    // si toutes les itérations sont finies
     if (game_done) {
         if (test) {
             test_unitaire->set_end_board(game_of_life->get_main_board());

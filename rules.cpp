@@ -6,7 +6,7 @@
 
 rules::rules() {}
 
-bool rules::apply_rules(int nbr_neighbours, bool state) {
+bool rules::apply_rules(int nbr_neighbours, bool state) { // applique les règles du jeu de la vie pour une cellule
     if (state) {
         if (nbr_neighbours == 2 || nbr_neighbours == 3) {
             return true;

@@ -14,28 +14,28 @@ namespace sf {
 
 graphic::graphic() {}
 
-float graphic::get_cell_size() {
+float graphic::get_cell_size() { // getter de cell_size
     return cell_size;
 }
 
-void graphic::set_cell_size(float cell_size) {
+void graphic::set_cell_size(float cell_size) { // setter de cell_size
     graphic::cell_size = cell_size;
 }
 
-void graphic::set_window_size(game* game_of_life) {
+void graphic::set_window_size(game* game_of_life) { // setter de window_width et window_height
     this->window_width = game_of_life->get_column() * cell_size;;
     this->window_height = game_of_life->get_row() * cell_size;
 }
 
-int graphic::get_window_width() {
+int graphic::get_window_width() { // getter de window_width
     return window_width;
 }
 
-int graphic::get_window_height() {
+int graphic::get_window_height() { // getter de window_height
     return window_height;
 }
 
-void graphic::show_grid(sf::RenderWindow* window, int row, int column, vector<vector<cell*>> cells) {
+void graphic::show_grid(sf::RenderWindow* window, int row, int column, vector<vector<cell*>> cells) { // affiche les cellules dans la fenêtre
     window->clear(sf::Color::Black); //on colore la fenetre en noir
 
     sf::VertexArray triangles(sf::PrimitiveType::Triangles, row * column * 6);      //on créée une liste de vertices de taille row * column * 6 car il y a 3 vertices par triangle, et 2 triangle par carrés.

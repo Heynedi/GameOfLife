@@ -20,12 +20,11 @@ namespace sf {
 
 controls::controls() {}
 
-
 void controls::click_cell_birth(sf::RenderWindow* window, graphic *gui, grid *main_board) {
     sf::Vector2i positionSouris = sf::Mouse::getPosition(*window);
-    int x_mouse = positionSouris.x;
-    int y_mouse = positionSouris.y;
-    int cell_size = gui->get_cell_size();
+    int x_mouse = positionSouris.x;         // coordonnée x de la souris
+    int y_mouse = positionSouris.y;         // coordonnée y de la souris
+    int cell_size = gui->get_cell_size();   // taille d'une cellule
     int width = gui->get_window_width();
     int height = gui->get_window_height();
     if (x_mouse > 0 && y_mouse > 0 && x_mouse < width && y_mouse < height) { //si la souris est dans la fenetre
@@ -37,9 +36,9 @@ void controls::click_cell_birth(sf::RenderWindow* window, graphic *gui, grid *ma
 
 void controls::click_cell_kill(sf::RenderWindow* window, graphic *gui, grid *main_board) {
     sf::Vector2i positionSouris = sf::Mouse::getPosition(*window);
-    int x_mouse = positionSouris.x;
-    int y_mouse = positionSouris.y;
-    int cell_size = gui->get_cell_size();
+    int x_mouse = positionSouris.x;         // coordonnée x de la souris
+    int y_mouse = positionSouris.y;         // coordonnée y de la souris
+    int cell_size = gui->get_cell_size();   // taille d'une cellule
     int width = gui->get_window_width();
     int height = gui->get_window_height();
     if (x_mouse > 0 && y_mouse > 0 && x_mouse < width && y_mouse < height) { //si la souris est dans la fenetre
@@ -51,29 +50,34 @@ void controls::click_cell_kill(sf::RenderWindow* window, graphic *gui, grid *mai
 
 void controls::click_key(sf::RenderWindow* window, graphic *gui, grid *main_board, bool* stop) {
     sf::Vector2i positionSouris = sf::Mouse::getPosition(*window);
-    int x_mouse = positionSouris.x;
-    int y_mouse = positionSouris.y;
-    int cell_size = gui->get_cell_size();
+    int x_mouse = positionSouris.x;         // coordonnée x de la souris
+    int y_mouse = positionSouris.y;         // coordonnée y de la souris
+    int cell_size = gui->get_cell_size();   // taille d'une cellule
+
+    // on calcule donc la cellule visée par la souris
     int x = x_mouse / cell_size;
     int y = y_mouse / cell_size;
+
+    // on récupère la taille de la fenêtre
     int width = gui->get_window_width();
     int height = gui->get_window_height();
+
+    // si une touche du clavier est appuyé
     if (const auto* keyEvent = window->pollEvent()->getIf<sf::Event::KeyPressed>()) {
         if (x_mouse > 0 && y_mouse > 0 && x_mouse < width && y_mouse < height) {
             //si la souris est dans la fenetre
-            if (keyEvent->code == sf::Keyboard::Key::LControl) {
-                /*main_board->cells[y][x] = new cell_obstacle();*/
+            if (keyEvent->code == sf::Keyboard::Key::LControl) { // si cette touche est LControl on crée une cellule obstacle là où pointe la souris
                 *main_board->get_cell(y,x) = cell_obstacle();
                 main_board->get_cell(y,x)->force_birth();
                 std::cout << main_board->get_cell(y,x)->get_is_obstacle() << std::endl;
                 cout<<"LControl"<<endl;
             }
-            else if (keyEvent->code == sf::Keyboard::Key::LAlt) {
+            else if (keyEvent->code == sf::Keyboard::Key::LAlt) { // si cette touche est LAlt on crée une cellule obstacle là où pointe la souris
                 *main_board->get_cell(x,y) = cell_standard();
                 cout<<"LAlt"<<endl;
             }
 
-            else if (keyEvent->code == sf::Keyboard::Key::Space) {
+            else if (keyEvent->code == sf::Keyboard::Key::Space) { // si cette touche est espace on inverse le booléen stop ce qui permet d'arrêter ou de relancer le jeu
                 *stop = !*stop;
             }
         }

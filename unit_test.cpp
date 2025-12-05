@@ -9,7 +9,7 @@
 #include "grid.h"
 #include "SFML/Audio/Music.hpp"
 
-bool unit_test::compare_board(game* game_of_life) {
+bool unit_test::compare_board(game* game_of_life) { // compare les board end_board et wanted_end_board
     for (int i = 0; i < game_of_life->get_row(); i++) {
         for (int j = 0; j < game_of_life->get_column(); j++) {
             if (!(end_board->get_cell(i,j)->get_state() == wanted_end_board->get_cell(i,j)->get_state())) {
@@ -20,20 +20,20 @@ bool unit_test::compare_board(game* game_of_life) {
     return true;
 }
 
-void unit_test::set_start_board(grid* start_board) {
+void unit_test::set_start_board(grid* start_board) { // setter de start_board
     this->start_board = start_board;
 }
 
-void unit_test::set_end_board(grid* end_board) {
+void unit_test::set_end_board(grid* end_board) { // setter de end_board
     this->end_board = end_board;
 }
 
-void unit_test::init_wanted_board_size(game* game_of_life) {
+void unit_test::init_wanted_board_size(game* game_of_life) { // récupère la taille de la grille
     this->column = game_of_life->get_column();
     this->row = game_of_life->get_row();
 }
 
-void unit_test::init_wanted_board_data() {
+void unit_test::init_wanted_board_data() { // extrait les données du fichier texte test_end_state.txt
     ifstream file("../test_end_state.txt", ios::in);
     string line;
 
@@ -54,7 +54,7 @@ void unit_test::init_wanted_board_data() {
     this->wanted_board_data = grid_data;
 }
 
-void unit_test::init_wanted_board() {
+void unit_test::init_wanted_board() { // crée et rempli le board wanted_end_board à partir des données d'un string grace a grid_fill
     wanted_end_board = new grid(row, column);
     wanted_end_board->grid_fill(wanted_board_data);
 }

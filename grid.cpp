@@ -5,7 +5,7 @@
 
 #include "cell_standard.h"
 
-grid::grid(int row, int column) {
+grid::grid(int row, int column) { // constructeur qui rempli uune grille de cellule standard
     this->row = row;
     this->column = column;
     for (int i = 0; i < row; i++) {
@@ -17,7 +17,7 @@ grid::grid(int row, int column) {
     }
 }
 
-void grid::grid_fill(string data) {
+void grid::grid_fill(string data) { // modifie les état des cellules d'une grille en fonction des données d'un string
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < column; j++) {
             if (data[i*column+j] == '1') {
@@ -27,15 +27,15 @@ void grid::grid_fill(string data) {
     }
 }
 
-cell* grid::get_cell(int x, int y) {
+cell* grid::get_cell(int x, int y) { // getter d'une cellule du tableau cells
     return cells[x][y];
 }
 
-vector<vector<cell*>>* grid::get_cells() {
+vector<vector<cell*>>* grid::get_cells() { // getter du tableau cells
     return &cells;
 }
 
-string grid::print_grid() {
+string grid::print_grid() { // crée un string qui contient les états des cellules de cells
     string string_grid;
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < column; j++) {
@@ -51,18 +51,10 @@ string grid::print_grid() {
     return string_grid;
 }
 
-void grid::reset() {
+void grid::reset() { // tue toutes les cellules du tableau cells
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < column; j++) {
-            if (i == 2 && j == 2) {
-                cout << cells[i][j]->get_is_obstacle();
-                cout << cells[i][j]->get_state() << endl;
-            }
             cells[i][j]->kill();
-            if (i == 2 && j == 2) {
-                cout << cells[i][j]->get_is_obstacle();
-                cout << cells[i][j]->get_state() << endl;
-            }
         }
     }
 }
